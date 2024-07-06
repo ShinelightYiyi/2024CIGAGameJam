@@ -10,10 +10,9 @@ public class Character : MonoBehaviour
     public int currentHealth;
     public int currentJumpCount;
     public int maxJumpCount;
-    public UnityEvent onDie;
-    public UnityEvent onBounce;
     private void Start()
     {
+        invulnarable = true;
         currentHealth = 1;//血量有限等价于不无敌，跳跃次数无限,初始状态跳跃次数无限
         currentJumpCount = maxJumpCount;//转化思路：playercontroller按下confirm键，广播转化，事件监听到，启动订阅函数
         //invulnarable = true;
@@ -23,17 +22,16 @@ public class Character : MonoBehaviour
     {
         if (other.CompareTag("SpikeWeed"))
         {
-           if (invulnarable)
-          {
-            onBounce?.Invoke();//无敌则被弹飞
-          }
-           else
-          {
-            //否则死亡、更新血量、播放音效
-            currentHealth = 0;
+            if (invulnarable)
+            {//无敌则被弹飞
+                EventCenter.Instance.EventTrigger("地刺跳跃");
+            }
+            else
+            {
+                currentHealth = 0;
                 Debug.Log("死亡");
-            onDie?.Invoke();
-          }
+                EventCenter.Instance.EventTrigger("地刺死亡");
+            }
         }
             
     }

@@ -46,7 +46,10 @@ public class PlayerController : MonoBehaviour
         //跳跃
         inputControl.Gameplay.Jump.started += Jump;//闪电图标中,canceled代表松开，performed为长按，started为按下瞬间
         //把jump函数方法添加到按键按下时刻执行
-        inputControl.Gameplay.Confirm.started += Confirm;
+
+        EventCenter.Instance.AddEventListener("切换状态", () => ChangeCondition());
+        EventCenter.Instance.AddEventListener("地刺死亡", () => PlayerDead());
+        EventCenter.Instance.AddEventListener("地刺跳跃", () => PlayerBounce());
     }
 
     
@@ -126,7 +129,7 @@ public class PlayerController : MonoBehaviour
         //impulse为冲量
     }
 
-    private void Confirm(InputAction.CallbackContext context)
+    private void ChangeCondition()
     {
         character.invulnarable = !character.invulnarable;//转换状态
 
@@ -143,6 +146,7 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerDead()
     {
+        EventCenter.Instance.EventTrigger("死亡");
         isDead = true;
         inputControl.Gameplay.Disable();//不能输入游戏操作，ui操作正常
     }
@@ -152,7 +156,7 @@ public class PlayerController : MonoBehaviour
         isBounce = true;
         rb.velocity = Vector2.zero;//先将速度归零
         Vector2 dir = new Vector2(0, 1).normalized;
-        rb.AddForce(dir * bounceForce, ForceMode2D.Impulse);//加一个瞬时力
+        rb.AddForce(dir * bounceForce * 2, ForceMode2D.Impulse);//加一个瞬时力
     }
     #endregion
 

@@ -10,12 +10,14 @@ public class InvetManager : MonoBehaviour
 
     bool canInput;
 
-    public PlayerInputControll inputControl;
+    [SerializeField] GameObject inputGo;
+
+
     
 
     private void Start()
     {
-        inputControl = new PlayerInputControll();
+
         ani = GetComponent<Animator>();
         canInput = false;
     }
@@ -40,6 +42,7 @@ public class InvetManager : MonoBehaviour
         if(collision.tag == "Player")
         {
             canInput = true;
+            inputGo.SetActive(true);
         }
     }
 
@@ -50,6 +53,7 @@ public class InvetManager : MonoBehaviour
         if (collision.tag == "Player")
         {
             canInput = false;
+            inputGo.SetActive(false);
         }
     }
 }
