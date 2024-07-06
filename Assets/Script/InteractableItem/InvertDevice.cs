@@ -32,6 +32,10 @@ public class InvertDevice : MonoBehaviour, IInteractable
     {
         spriteRenderer.sprite = jumpLimitLessSprite;
         isDone = !isDone;
+        if (isDone)
+            Debug.Log("当前是无限血量状态");
+        else
+            Debug.Log("当前是无限跳跃状态");
         onInvert?.Invoke();
         //this.gameObject.tag = "Untagged";
     }
