@@ -6,8 +6,8 @@ using UnityEngine.Audio;
 
 public class AudioManager
 {
-    private AudioManager instance;
-    public AudioManager Instance { get => instance ?? (instance = new AudioManager()); }
+    private static AudioManager instance;
+    public static AudioManager Instance { get => instance ?? (instance = new AudioManager()); }
 
 
 
