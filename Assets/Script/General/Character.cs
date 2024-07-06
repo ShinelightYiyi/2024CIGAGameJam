@@ -31,6 +31,7 @@ public class Character : MonoBehaviour
           {
             //否则死亡、更新血量、播放音效
             currentHealth = 0;
+                Debug.Log("死亡");
             onDie?.Invoke();
           }
         }

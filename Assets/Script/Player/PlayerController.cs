@@ -98,11 +98,11 @@ public class PlayerController : MonoBehaviour
 
 
         int facedir = (int)transform.localScale.x;//面朝方向
-        if (inputDirection.x > 0)
-            facedir = 1;
-        if (inputDirection.x < 0)
-            facedir = -1;
-        transform.localScale = new Vector3(facedir, 1, 1);//这样翻转需要贴图锚点在脚底中央
+        if (inputDirection.x > 0 && facedir<0)
+            facedir = -facedir;
+        if (inputDirection.x < 0 && facedir >0)
+            facedir = -facedir;
+         transform.localScale = new Vector3(facedir, transform.localScale.y, transform.localScale.z);//这样翻转需要贴图锚点在脚底中央
         //输入transform时有两个选项，扳手是变量，后者是类型
         //也可以用spriterenderer的flip翻转，获取该组件方式和rigidbody一样
 

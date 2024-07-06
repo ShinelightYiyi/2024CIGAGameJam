@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 5602228464845343276}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35,8 +35,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.06, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 4.41, y: 4.41, z: 4.41}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4569731162441006764}
   m_Father: {fileID: 0}
@@ -81,13 +81,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c7b360d2ffb2fbc4cabeb09563f70e40, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: -1329805106, guid: 9fa98aa62f5e08b4d9ac4477e22fdcf7, type: 3}
   m_Color: {r: 0.63529414, g: 0.63529414, b: 0.63529414, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 10.24, y: 10.24}
+  m_Size: {x: 0.6279297, y: 0.1328125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -106,8 +106,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputDirection: {x: 0, y: 0}
-  speed: 100
-  jumpForce: 10
+  speed: 145
+  jumpForce: 17
   normal: {fileID: 6200000, guid: ccff6076ae8f36448b92ecad81ae4628, type: 2}
   wall: {fileID: 0}
   isBounce: 0
@@ -139,8 +139,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   invulnarable: 0
   currentHealth: 0
-  currentJumpCount: 10
-  maxJumpCount: 10
+  currentJumpCount: 2
+  maxJumpCount: 2
   onDie:
     m_PersistentCalls:
       m_Calls:
@@ -203,8 +203,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.043976124, y: -0.06454387}
-  m_Size: {x: 0.62000006, y: 0.18113466}
+  m_Offset: {x: 0.01138171, y: -0.064543866}
+  m_Size: {x: 0.3302786, y: 0.18113516}
   m_Direction: 1
 --- !u!50 &990230701237446084
 Rigidbody2D:
@@ -265,18 +265,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.10243046, y: -0.11665682}
+  m_Offset: {x: 0.04358012, y: -0.04513091}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 10.24, y: 10.24}
+    oldSize: {x: 0.54296875, y: 0.34277344}
+    newSize: {x: 0.6279297, y: 0.1328125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.35127378, y: 0.11796014}
+  m_Size: {x: 0.26254517, y: 0.2066885}
   m_EdgeRadius: 0
 --- !u!114 &7466530034887702323
 MonoBehaviour:
@@ -291,7 +291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manual: 1
-  checkRadius: 0.5
+  checkRadius: 1.01
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
