@@ -9,6 +9,7 @@ public class NextLevel : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
+            Debug.Log("进入");
             EventCenter.Instance.EventTrigger<string>("下一关", nextLevel);
         }
     }
