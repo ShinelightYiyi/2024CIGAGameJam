@@ -4,62 +4,154 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-public class EventCenter
+public interface IEventInfo
 {
-    //单例模式
-    private static EventCenter instance;
-    public static EventCenter GetInstance()
+
+}
+
+
+public class EventInfo :IEventInfo
+{
+    public UnityAction actions;
+    public EventInfo(UnityAction action)
     {
-        if (instance == null)
-            instance = new EventCenter();
-        return instance;
+        actions += action;
+    }
+}
+
+
+public class EventInfo<T> :IEventInfo
+{
+    public UnityAction<T> actions;
+    public EventInfo( UnityAction<T> action)
+    {
+        actions += action;
     }
 
-    //使用参数为object的Unity自带委托作字典的值
-    private Dictionary<string, UnityAction<object>> eventDic = new Dictionary<string, UnityAction<object>>();
+}
+
+public class EventCenter  //通知者
+{
+    private static EventCenter instance;
+    public static EventCenter Instance { get => instance ?? (instance = new EventCenter()); }
+    //单例模式  
+
 
     /// <summary>
-    ///添加事件监听
+    /// key--事件名   value--对应委托
     /// </summary>
-    /// <param name="name">事件名</param>
-    /// <param name="action">“结果”（需要监听对应事件的委托函数）</param>
-    public void AddEventListener(string name, UnityAction<object> action)
+    private static Dictionary<string, IEventInfo> eventDic = new Dictionary<string, IEventInfo>();
+
+
+
+    /// <summary>
+    /// 为事件添加泛型委托
+    /// </summary>
+    /// <typeparam 委托类型="T"></typeparam>
+    /// <param name=委托名></param>
+    /// <param name=具体委托></param>
+    public void AddEventListener<T>(string name, UnityAction<T> action)
     {
+        //是否已有对应事件  
         if (eventDic.ContainsKey(name))
         {
-            eventDic[name] += action;
+            (eventDic[name] as EventInfo<T>).actions += action;
         }
         else
         {
-            eventDic.Add(name, action);
+            eventDic.Add(name, new EventInfo<T>(action));
         }
     }
 
-    //移除事件监听
-    public void RemoveEventListener(string name, UnityAction<object> action)
+
+    /// <summary>
+    /// 为事件添加委托
+    /// </summary>
+    /// <param name=委托名></param>
+    /// <param name=具体委托></param>
+    public void AddEventListener(string name, UnityAction action)
     {
         if (eventDic.ContainsKey(name))
         {
-            eventDic[name] -= action;
+            (eventDic[name] as EventInfo).actions += action;
+        }
+        else
+        {
+            eventDic.Add(name, new EventInfo(action));
+        }
+    }
+
+
+    /// <summary>
+    /// 移除泛型事件
+    /// </summary>
+    /// <typeparam 委托类型="T"></typeparam>
+    /// <param name=事件名></param>
+    /// <param name=具体委托></param>
+    public void RemoveEventListener<T>(string name, UnityAction<T> action)
+    {
+        if (eventDic.ContainsKey(name))
+        {
+            (eventDic[name] as EventInfo<T>).actions -= action;
+        }
+    }
+
+
+    /// <summary>
+    /// 移除事件
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="action"></param>
+    public void RemoveEventListener(string name, UnityAction action)
+    {
+        if (eventDic.ContainsKey(name))
+        {
+            (eventDic[name] as EventInfo).actions -= action;
+        }
+    }
+
+
+    /// <summary>
+    /// 触发泛型事件
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="name"></param>
+    /// <param name="info"></param>
+    public void EventTrigger<T>(string name, T info)
+    {
+        if (eventDic.ContainsKey(name))
+        {
+            if ((eventDic[name] as EventInfo<T>).actions != null)
+            {
+                (eventDic[name] as EventInfo<T>).actions.Invoke(info);
+            }
         }
     }
 
     /// <summary>
-    /// 事件触发
+    /// 触发事件
     /// </summary>
-    /// <param name="name">需要触发的事件名</param>
-    /// <param name="info">参数</param>
-    public void EventTrigger(string name, object info)
+    /// <param name="name"></param>
+    public void EventTrigger(string name)
     {
         if (eventDic.ContainsKey(name))
         {
-            eventDic[name].Invoke(info);
+            if ((eventDic[name] as EventInfo).actions != null)
+            {
+                (eventDic[name] as EventInfo).actions.Invoke();
+            }
         }
     }
 
-    //清空事件中心
+    /// <summary>
+    /// 清空字典，切换场景时使用
+    /// </summary>
     public void Clear()
     {
         eventDic.Clear();
     }
+
+
 }
+
+
