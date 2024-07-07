@@ -45,14 +45,18 @@ public class PlayerController : MonoBehaviour
         
         //跳跃
         inputControl.Gameplay.Jump.started += Jump;//闪电图标中,canceled代表松开，performed为长按，started为按下瞬间
-        //把jump函数方法添加到按键按下时刻执行
+                                                   //把jump函数方法添加到按键按下时刻执行
+        inputControl.Gameplay.Jump.started += JumpSound;
+        inputControl.Gameplay.Move.performed += MoveSound;
 
         EventCenter.Instance.AddEventListener("切换状态", () => ChangeCondition());
         EventCenter.Instance.AddEventListener("地刺死亡", () => PlayerDead());
         EventCenter.Instance.AddEventListener("地刺跳跃", () => PlayerBounce());
     }
 
-    
+
+
+
 
     private void OnEnable()
     {
@@ -93,12 +97,22 @@ public class PlayerController : MonoBehaviour
         inputControl.Gameplay.Enable();
     }
 
+    private void MoveSound(InputAction.CallbackContext context)
+    {
+        AudioManager.Instance.PlaySound("Audio/sound_game_stonestep1");
+    }
+
+    private void JumpSound(InputAction.CallbackContext context)
+    {
+        AudioManager.Instance.PlaySound("Audio/sound_game_meow1");
+    }
+
     public void Move()
     {
 
         //if (!isCrouch)
         rb.velocity = new Vector2(inputDirection.x * speed * Time.deltaTime, rb.velocity.y);
-
+    
 
         int facedir = (int)transform.localScale.x;//面朝方向
         if (inputDirection.x > 0 && facedir<0)
@@ -109,7 +123,6 @@ public class PlayerController : MonoBehaviour
         //输入transform时有两个选项，扳手是变量，后者是类型
         //也可以用spriterenderer的flip翻转，获取该组件方式和rigidbody一样
 
-        
     }
 
     /// <summary>
@@ -118,12 +131,18 @@ public class PlayerController : MonoBehaviour
     /// <param name="context"></param>
     private void Jump(InputAction.CallbackContext context)
     {
-        if(character.currentJumpCount>0)
+        if (character.currentJumpCount > 0)
+        {
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+        }
         if (character.invulnarable)//如果无限血，减跳跃次数
+        {
             character.currentJumpCount -= 1;
+        }
         else
+        {
             character.currentJumpCount = character.maxJumpCount;
+        }
         //GetComponent<AudioDefination>()?.PlayAudioClip();
        
         //impulse为冲量

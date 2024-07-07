@@ -5,7 +5,7 @@ using UnityEngine;
 public class LevelController : MonoBehaviour
 {
 
-    public static LevelController Instance = null;
+
 
 
     GameObject passPanel;
@@ -13,14 +13,6 @@ public class LevelController : MonoBehaviour
 
     private void Start()
     {
-        Debug.LogWarning("สตภýปฏ");
-        if(Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         passPanel = GameObject.FindGameObjectWithTag("Pass");
         passAni = passPanel.GetComponent<Animator>();

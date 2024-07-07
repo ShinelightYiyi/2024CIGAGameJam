@@ -8,6 +8,8 @@ TagManager:
   - SpikeWeed
   - PassCanvas
   - Pass
+  - Music
+  - Sound
   layers:
   - Default
   - TransparentFX
