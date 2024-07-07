@@ -30,6 +30,7 @@ public class InvetManager : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.F))
             {
                 ani.SetTrigger("isInput");
+                AudioManager.Instance.PlaySound("Audio/sound_game_rotatebox");
                 EventCenter.Instance.EventTrigger("ÇÐ»»×´Ì¬");
             }
         }
