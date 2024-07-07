@@ -33,7 +33,7 @@ public class PhysicsCheck : MonoBehaviour
 
     public void Check()//检测地面
     {
-        isGround = Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset * transform.localScale, checkRadius, groundLayer);//括号内有很多格式，该函数能检测特定图层的碰撞
+        isGround = Physics2D.OverlapCircle((Vector2)transform.position + ( bottomOffset)  * transform.localScale, checkRadius, groundLayer);//括号内有很多格式，该函数能检测特定图层的碰撞
                                                                                                                                         //在编辑器内选中对象按w显示坐标
                                                                                                                                         //起始点与地面的碰撞检测
 
