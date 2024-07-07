@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Character character;
     //private CapsuleCollider2D coll;
-    //private PhysicsCheck physicsCheck;
+    private PhysicsCheck physicsCheck;
     //private PlayerAnimation playerAnimation;
     [Header("基本参数")]
     public float speed;
@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        
+        physicsCheck = GetComponent<PhysicsCheck>();
         inputControl = new PlayerInputControll();
         rb = GetComponent<Rigidbody2D>();
         character = GetComponent<Character>();
@@ -47,7 +47,6 @@ public class PlayerController : MonoBehaviour
         inputControl.Gameplay.Jump.started += Jump;//闪电图标中,canceled代表松开，performed为长按，started为按下瞬间
                                                    //把jump函数方法添加到按键按下时刻执行
         inputControl.Gameplay.Jump.started += JumpSound;
-        inputControl.Gameplay.Move.performed += MoveSound;
 
         EventCenter.Instance.AddEventListener("切换状态", () => ChangeCondition());
         EventCenter.Instance.AddEventListener("地刺死亡", () => PlayerDead());
@@ -97,13 +96,11 @@ public class PlayerController : MonoBehaviour
         inputControl.Gameplay.Enable();
     }
 
-    private void MoveSound(InputAction.CallbackContext context)
-    {
-        AudioManager.Instance.PlaySound("Audio/sound_game_stonestep1");
-    }
+
 
     private void JumpSound(InputAction.CallbackContext context)
     {
+        if(physicsCheck.isGround)
         AudioManager.Instance.PlaySound("Audio/sound_game_meow1");
     }
 
@@ -131,20 +128,22 @@ public class PlayerController : MonoBehaviour
     /// <param name="context"></param>
     private void Jump(InputAction.CallbackContext context)
     {
-        if (character.currentJumpCount > 0)
+        if (physicsCheck.isGround)
         {
-            rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+            if (character.currentJumpCount > 0)
+            {
+                rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+            }
+            if (character.invulnarable)//如果无限血，减跳跃次数
+            {
+                character.currentJumpCount -= 1;
+            }
+            else
+            {
+                character.currentJumpCount = character.maxJumpCount;
+            }
+            //GetComponent<AudioDefination>()?.PlayAudioClip();
         }
-        if (character.invulnarable)//如果无限血，减跳跃次数
-        {
-            character.currentJumpCount -= 1;
-        }
-        else
-        {
-            character.currentJumpCount = character.maxJumpCount;
-        }
-        //GetComponent<AudioDefination>()?.PlayAudioClip();
-       
         //impulse为冲量
     }
 
